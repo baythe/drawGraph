@@ -14,13 +14,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 /**
@@ -43,39 +41,42 @@ public class CanvasParabola extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+		// Define the canvas on which the mathematical graph will be drawn
 		Canvas canvas = new Canvas();
         canvas.setHeight(600);
         canvas.setWidth(600);
         
+        //Define the canvas which will contain the graph frame
+        Canvas frame = new Canvas(600, 600);
+        drawSection(frame);
+        
+        //Adding canvas in a Panel
+        Pane pane = new Pane(frame,canvas);
+        canvas.toFront();
+        
         // Define the textfields
         A = new TextField();
-        Label ALabel = new Label("a:");
         B = new TextField();
-        Label BLabel = new Label("b:");
         C = new TextField();
-        Label CLabel = new Label("c:");
-        
         Button drawButton = new Button("DRAW");
         drawButton.setStyle("-fx-text-fill : white; -fx-background-color: red;");
         drawButton.setOnAction( e -> {
         	retrieveInput();
         	canvas.getGraphicsContext2D().clearRect(0, 0, 600, 600);
-        	drawSection(canvas);
+        	//drawSection(canvas);
             drawFunction(canvas);
         });
         
-        HBox hbox = new HBox(10, ALabel,A,BLabel,B,CLabel,C,drawButton);
+        HBox hbox = new HBox(10, new Label("a:"),A,new Label("b:"),B,new Label("c:"),C,drawButton);
         hbox.setBackground(new Background(new BackgroundFill(Color.BLANCHEDALMOND, CornerRadii.EMPTY, Insets.EMPTY)));
         hbox.setPadding(new Insets(10));
         hbox.setSpacing(10);
         
-        drawSection(canvas);
-        
-        VBox vbox = new VBox(hbox,canvas);
+        //Add The panels into a VBOX layout
+        VBox vbox = new VBox(hbox,pane);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(5));
-        vbox.setMargin(canvas, new Insets(5));
+        vbox.setMargin(pane, new Insets(5));
         Scene scene = new Scene(vbox, 650, 650);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Display Parabola in Canvas");
