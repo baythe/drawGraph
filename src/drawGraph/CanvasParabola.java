@@ -115,7 +115,7 @@ public class CanvasParabola extends Application{
 		try {
 			value = Double.valueOf(textfield.getText());
 		}catch(NumberFormatException e) {
-			value = 0;
+			return 0;
 		}
 		return value;
 	}
